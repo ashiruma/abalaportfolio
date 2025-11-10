@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chrispine Abala Portfolio</title>
+  <style>
+    :root {
+      --green: #2ba84a;
+      --yellow: #ffcc00;
+      --red: #d32f2f;
+      --text: #222;
+      --bg: #fff;
+      --accent: #1c1c1c;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", "Lato", sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 2rem 1rem 1rem;
+      text-align: center;
+      position: relative;
+    }
+
+    header img {
+      height: 100px;
+      margin-bottom: 1rem;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      color: var(--accent);
+      letter-spacing: 1px;
+    }
+
+    .admin-toggle {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .admin-toggle:hover {
+      background: #333;
+    }
+
+    .admin-panel {
+      display: none;
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #f9f9f9;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .admin-panel.active {
+      display: block;
+    }
+
+    .admin-panel h3 {
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+
+    .admin-panel input,
+    .admin-panel select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .admin-panel button {
+      background: var(--green);
+      color: white;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 0.5rem;
+    }
+
+    .admin-panel button:hover {
+      background: #248a3d;
+    }
+
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      padding: 3rem 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .category {
+      border-radius: 10px;
+      background: #f9f9f9;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      overflow: hidden;
+      transition: transform 0.2s ease;
+      opacity: 0;
+      animation: fadeInUp 0.6s forwards;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .category:nth-child(1) { animation-delay: 0.1s; }
+    .category:nth-child(2) { animation-delay: 0.2s; }
+    .category:nth-child(3) { animation-delay: 0.3s; }
+    .category:nth-child(4) { animation-delay: 0.4s; }
+    .category:nth-child(5) { animation-delay: 0.5s; }
+    .category:nth-child(6) { animation-delay: 0.6s; }
+
+    .category:hover {
+      transform: translateY(-4px);
+    }
+
+    .category h2 {
+      text-align: center;
+      padding: 1rem;
+      color: var(--accent);
+      border-bottom: 3px solid transparent;
+      font-size: 1.2rem;
+      font-weight: 700;
+      position: relative;
+    }
+
+    .category h2 .count {
+      font-size: 0.8rem;
+      color: #666;
+      font-weight: 400;
+    }
+
+    .shortfilms h2 { border-color: var(--red); }
+    .photography h2 { border-color: var(--green); }
+    .behind h2 { border-color: var(--yellow); }
+    .commercials h2 { border-color: var(--green); }
+    .documentaries h2 { border-color: var(--red); }
+    .music h2 { border-color: var(--yellow); }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 6px;
+      padding: 6px;
+      min-height: 100px;
+    }
+
+    .gallery.empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-style: italic;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .gallery img:hover {
+      opacity: 0.85;
+      transform: scale(1.05);
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #555;
+      background: #f1f1f1;
+    }
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0);
+      justify-content: center;
+      align-items: center;
+      transition: background 0.3s ease;
+    }
+
+    .lightbox.active {
+      display: flex;
+      background: rgba(0,0,0,0.95);
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .lightbox.active img {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .lightbox button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.3);
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      padding: 1rem 1.5rem;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox button:hover {
+      background: rgba(255,255,255,0.2);
+      border-color: rgba(255,255,255,0.5);
+    }
+
+    .lightbox .prev { left: 20px; }
+    .lightbox .next { right: 20px; }
+
+    .lightbox .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 2rem;
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.3);
+      color: #fff;
+      cursor: pointer;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox .close:hover {
+      background: rgba(255,255,255,0.2);
+      border-color: rgba(255,255,255,0.5);
+    }
+
+    @media (max-width: 768px) {
+      .lightbox button {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <button class="admin-toggle" id="adminToggle">+ Add Images</button>
+    <img src="https://via.placeholder.com/100x100?text=MB" alt="Mbogiwood Logo" />
+    <h1>Chrispine Abala Portfolio</h1>
+  </header>
+
+  <div class="admin-panel" id="adminPanel">
+    <h3>Add New Image</h3>
+    <select id="categorySelect">
+      <option value="shortfilms">Short Films</option>
+      <option value="photography">Photography</option>
+      <option value="behind">Behind the Scenes</option>
+      <option value="commercials">Commercials</option>
+      <option value="documentaries">Documentaries</option>
+      <option value="music">Music</option>
+    </select>
+    <input type="text" id="imageUrl" placeholder="Paste image URL here" />
+    <input type="text" id="imageTitle" placeholder="Image title (optional)" />
+    <button id="addImage">Add Image</button>
+    <button id="clearAll" style="background: var(--red);">Clear All Images</button>
+  </div>
+
+  <main class="categories" id="categories"></main>
+
+  <footer>
+    © 2025 Chrispine Abala. All Rights Reserved.
+  </footer>
+
+  <div class="lightbox" id="lightbox">
+    <button class="close" id="closeBtn">&times;</button>
+    <button class="prev" id="prevBtn">&#10094;</button>
+    <img src="" alt="Expanded view" id="lightboxImg">
+    <button class="next" id="nextBtn">&#10095;</button>
+  </div>
+
+  <script>
+    const portfolioData = {
+      shortfilms: [],
+      photography: [],
+      behind: [],
+      commercials: [],
+      documentaries: [],
+      music: []
+    };
+
+    const categoryNames = {
+      shortfilms: 'Short Films',
+      photography: 'Photography',
+      behind: 'Behind the Scenes',
+      commercials: 'Commercials',
+      documentaries: 'Documentaries',
+      music: 'Music'
+    };
+
+    const categoryClasses = {
+      shortfilms: 'shortfilms',
+      photography: 'photography',
+      behind: 'behind',
+      commercials: 'commercials',
+      documentaries: 'documentaries',
+      music: 'music'
+    };
+
+    function renderPortfolio() {
+      const container = document.getElementById('categories');
+      container.innerHTML = '';
+
+      Object.keys(portfolioData).forEach(category => {
+        const section = document.createElement('section');
+        section.className = `category ${categoryClasses[category]}`;
+        
+        const count = portfolioData[category].length;
+        const h2 = document.createElement('h2');
+        h2.innerHTML = `${categoryNames[category]} <span class="count">(${count})</span>`;
+        
+        const gallery = document.createElement('div');
+        gallery.className = 'gallery';
+        
+        if (portfolioData[category].length === 0) {
+          gallery.classList.add('empty');
+          gallery.textContent = 'No images yet';
+        } else {
+          portfolioData[category].forEach(item => {
+            const img = document.createElement('img');
+            img.src = item.url;
+            img.alt = item.title || categoryNames[category];
+            gallery.appendChild(img);
+          });
+        }
+        
+        section.appendChild(h2);
+        section.appendChild(gallery);
+        container.appendChild(section);
+      });
+
+      attachLightboxListeners();
+    }
+
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const closeBtn = document.getElementById('closeBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    let allImages = [];
+    let currentIndex = 0;
+
+    function attachLightboxListeners() {
+      allImages = document.querySelectorAll('.gallery img:not(.empty)');
+      
+      allImages.forEach((img, index) => {
+        img.addEventListener('click', () => showImage(index));
+      });
+    }
+
+    function showImage(index) {
+      currentIndex = index;
+      lightboxImg.src = allImages[index].src;
+      lightbox.classList.add('active');
+      setTimeout(() => {
+        lightboxImg.style.opacity = '1';
+        lightboxImg.style.transform = 'scale(1)';
+      }, 10);
+    }
+
+    function closeLightbox() {
+      lightboxImg.style.opacity = '0';
+      lightboxImg.style.transform = 'scale(0.8)';
+      setTimeout(() => {
+        lightbox.classList.remove('active');
+      }, 300);
+    }
+
+    closeBtn.addEventListener('click', closeLightbox);
+
+    nextBtn.addEventListener('click', () => {
+      lightboxImg.style.opacity = '0';
+      lightboxImg.style.transform = 'translateX(100px) scale(0.9)';
+      setTimeout(() => {
+        currentIndex = (currentIndex + 1) % allImages.length;
+        lightboxImg.src = allImages[currentIndex].src;
+        lightboxImg.style.transform = 'translateX(-100px) scale(0.9)';
+        setTimeout(() => {
+          lightboxImg.style.opacity = '1';
+          lightboxImg.style.transform = 'translateX(0) scale(1)';
+        }, 10);
+      }, 200);
+    });
+
+    prevBtn.addEventListener('click', () => {
+      lightboxImg.style.opacity = '0';
+      lightboxImg.style.transform = 'translateX(-100px) scale(0.9)';
+      setTimeout(() => {
+        currentIndex = (currentIndex - 1 + allImages.length) % allImages.length;
+        lightboxImg.src = allImages[currentIndex].src;
+        lightboxImg.style.transform = 'translateX(100px) scale(0.9)';
+        setTimeout(() => {
+          lightboxImg.style.opacity = '1';
+          lightboxImg.style.transform = 'translateX(0) scale(1)';
+        }, 10);
+      }, 200);
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextBtn.click();
+      if (e.key === 'ArrowLeft') prevBtn.click();
+    });
+
+    document.getElementById('adminToggle').addEventListener('click', () => {
+      document.getElementById('adminPanel').classList.toggle('active');
+    });
+
+    document.getElementById('addImage').addEventListener('click', () => {
+      const category = document.getElementById('categorySelect').value;
+      const url = document.getElementById('imageUrl').value.trim();
+      const title = document.getElementById('imageTitle').value.trim();
+
+      if (!url) {
+        alert('Please enter an image URL');
+        return;
+      }
+
+      portfolioData[category].push({ url, title });
+      document.getElementById('imageUrl').value = '';
+      document.getElementById('imageTitle').value = '';
+      renderPortfolio();
+    });
+
+    document.getElementById('clearAll').addEventListener('click', () => {
+      if (confirm('Are you sure you want to clear all images?')) {
+        Object.keys(portfolioData).forEach(key => {
+          portfolioData[key] = [];
+        });
+        renderPortfolio();
+      }
+    });
+
+    // Initialize with some sample images
+    portfolioData.shortfilms = [
+      { url: 'https://via.placeholder.com/300x200?text=Short+Film+1', title: 'Short Film 1' },
+      { url: 'https://via.placeholder.com/300x200?text=Short+Film+2', title: 'Short Film 2' }
+    ];
+    portfolioData.photography = [
+      { url: 'https://drive.google.com/drive/u/0/folders/1dIWQnhwv0A0_y1qdWGGOdrFu0BcEw_7C', title: 'Perfume this' },
+      { url: 'https://via.placeholder.com/300x200?text=Photo+2', title: 'Photo 2' },
+      { url: 'https://via.placeholder.com/300x200?text=Photo+3', title: 'Photo 3' }
+    ];
+
+    renderPortfolio();
+  </script>
+</body>
+</html>
