@@ -3,28 +3,28 @@
     "id": 101,
     "title": "Nairobi Sunset Chase",
     "category": "shortfilms",
-    "imageUrl": "https://via.placeholder.com/300x200?text=Short+Film+1",
+    "imageUrl": "https://raw.githubusercontent.com/ashiruma/abalaportfolio/refs/heads/main/portfolio_data.json",
     "date": "2024-05-15"
   },
   {
     "id": 205,
     "title": "Commercial Shoot - Behind the Lens",
     "category": "behind",
-    "imageUrl": "https://via.placeholder.com/300x200?text=BTS+Shoot+2",
+    "imageUrl": "https://raw.githubusercontent.com/ashiruma/abalaportfolio/refs/heads/main/portfolio_data.json",
     "date": "2023-11-01"
   },
   {
     "id": 312,
     "title": "Portrait of a Musician",
     "category": "photography",
-    "imageUrl": "https://via.placeholder.com/300x200?text=Photo+3",
+    "imageUrl": "https://raw.githubusercontent.com/ashiruma/abalaportfolio/refs/heads/main/portfolio_data.json",
     "date": "2024-08-20"
   },
   {
     "id": 403,
     "title": "The Green Energy Campaign",
     "category": "commercials",
-    "imageUrl": "https://via.placeholder.com/300x200?text=Commercial+1",
+    "imageUrl": "https://raw.githubusercontent.com/ashiruma/abalaportfolio/refs/heads/main/portfolio_data.json",
     "date": "2024-01-10"
   }
 ]
