@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chrispine Abala Portfolio</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <button class="admin-toggle" id="adminToggle">+ Add Images</button>
+    <button class="logout-btn" id="logoutBtn" style="display: none;">Logout</button>
+    <img src="https://via.placeholder.com/100x100?text=MB" alt="Abala Logo" />
+    <h1>Chrispine Abala Portfolio</h1>
+  </header>
+
+  <div class="admin-panel" id="adminPanel">
+    <h3>Add New Image</h3>
+    <form id="addImageForm">
+      <select id="categorySelect" required>
+        <option value="">Select Category</option>
+        <option value="shortfilms">Short Films</option>
+        <option value="photography">Photography</option>
+        <option value="behind">Behind the Scenes</option>
+        <option value="commercials">Commercials</option>
+        <option value="documentaries">Documentaries</option>
+        <option value="music">Music</option>
+      </select>
+      <input type="url" id="imageUrl" placeholder="Paste image URL here" required />
+      <input type="text" id="imageTitle" placeholder="Image title (optional)" />
+      <button type="submit" id="addImageBtn">
+        <span class="btn-text">Add Image</span>
+        <span class="btn-loader" style="display: none;">Adding...</span>
+      </button>
+      <button type="button" id="clearAllBtn" class="danger-btn">
+        Clear All Images
+      </button>
+    </form>
+    <div id="formError" class="error-message"></div>
+  </div>
+
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loader"></div>
+    <p>Loading portfolio...</p>
+  </div>
+
+  <main class="categories" id="categories"></main>
+
+  <footer>
+    © 2025 Chrispine Abala. All Rights Reserved.
+  </footer>
+
+  <div class="lightbox" id="lightbox">
+    <button class="close" id="closeBtn">&times;</button>
+    <button class="prev" id="prevBtn">&#10094;</button>
+    <img src="" alt="Expanded view" id="lightboxImg">
+    <button class="next" id="nextBtn">&#10095;</button>
+  </div>
+
+  <script src="api.js"></script>
+  <script src="auth.js"></script>
+  <script src="lightbox.js"></script>
+  <script src="gallery.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
